@@ -386,7 +386,6 @@
                 password: hotel.password
               }).then(function(res) {
                 authToken = res.body.token
-                console.log(authToken)
                 self.$http.post('https://kampus-tour.herokuapp.com/group/add-hotel', {
                   id: groupId,
                   hotel: {
