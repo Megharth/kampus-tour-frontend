@@ -10,6 +10,7 @@ import store from './store'
 import VueResource from 'vue-resource'
 import './registerServiceWorker'
 
+
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(VueResource)

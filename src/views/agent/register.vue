@@ -24,12 +24,7 @@
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="password" placeholder="Password" required v-model="agent.password" :state="validatePass"></b-form-input>
-                <b-form-invalid-feedback :state="validatePass">
-                  This is a required field
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="password" v-model="agent.password" :required="true" placeholder="password"></inputComponent>
             </b-col>
             <b-col>
               <b-form-group>
@@ -43,20 +38,20 @@
           <b-row>
             <b-col>
               <b-form-group>
-                <b-form-input type="text" placeholder="Agency Name" v-model="agent.agencyName" :state="validateAgencyName"></b-form-input>
+                <b-form-input type="text" placeholder="Agency Name as per GST" v-model="agent.agencyName" :state="validateAgencyName" @blur="verifyAgencyName"></b-form-input>
                 <b-form-invalid-feedback :state="validateAgencyName">
                   This is a required field
                 </b-form-invalid-feedback>
+                <div class="error" v-if="agencyNameExists">
+                  Agency Name already Exists
+                </div>
               </b-form-group>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Agency Type" v-model="agent.agencyType" :state="validateAgencyType"></b-form-input>
-                <b-form-invalid-feedback :state="validateAgencyType">
-                  This is a required field
-                </b-form-invalid-feedback>
+              <b-form-group label="Agency Type">
+                <b-form-select v-model="agent.agencyType" :options="agencyTypeOptions"></b-form-select>
               </b-form-group>
             </b-col>
           </b-row>
@@ -67,86 +62,62 @@
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" v-model="agent.ownerInfo.firstName" placeholder="First Name" :state="validateOwnerFName"></b-form-input>
-                <b-form-invalid-feedback :state="validateOwnerFName">
-                  This is a required Field
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="text" v-model="ownerDetails.firstName" :required="true" placeholder="First Name"></inputComponent>
             </b-col>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" v-model="agent.ownerInfo.lastName" placeholder="Last Name" :state="validateOwnerLName"></b-form-input>
-                <b-form-invalid-feedback :state="validateOwnerLName">
-                  This is a required Field
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="text" v-model="ownerDetails.lastName" :required="true" placeholder="Last Name"></inputComponent>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" v-model="agent.ownerInfo.mobileNumber" placeholder="Mobile Number" :state="validateOwnerMobile"></b-form-input>
-                <b-form-invalid-feedback :state="validateOwnerMobile">
-                  Number should be of 10 digits
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="number" v-model="ownerDetails.mobileNumber" :required="true" placeholder="Mobile Number"></inputComponent>
             </b-col>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" v-model="agent.ownerInfo.whatsappNumber" placeholder="Whatsapp Number" :state="validateOwnerWhatsapp"></b-form-input>
-                <b-form-invalid-feedback :state="validateOwnerWhatsapp">
-                  Number should be of 10 digits
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="number" v-model="ownerDetails.whatsappNumber" :required="true" placeholder="Whatsapp Number"></inputComponent>
             </b-col>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" v-model="agent.ownerInfo.landlineNumber" placeholder="Landline Number" :state="validateOwnerLandline"></b-form-input>
-                <b-form-invalid-feedback :state="validateOwnerLandline">
-                  Number should be of 10 digits
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="number" v-model="ownerDetails.landlineNumber" :required="true" placeholder="Landline Number"></inputComponent>
             </b-col>
           </b-row>
+          <div class="second-owner" v-if="agent.agencyType !== 'Proprietary'">
+            <b-btn variant="success" @click="secondPerson = true" id="add-second-person" v-if="!secondPerson">Add details of second person</b-btn>
+            <div v-if="secondPerson">
+              <hr>
+              <b-row>
+                <b-col>
+                  <inputComponent type="text" v-model="secondOwnerDetails.firstName" :required="false" placeholder="First Name"></inputComponent>
+                </b-col>
+                <b-col>
+                  <inputComponent type="text" v-model="secondOwnerDetails.lastName" :required="false" placeholder="Last Name"></inputComponent>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col>
+                  <inputComponent type="number" v-model="secondOwnerDetails.mobileNumber" :required="false" placeholder="Mobile Number"></inputComponent>
+                </b-col>
+                <b-col>
+                  <inputComponent type="number" v-model="secondOwnerDetails.whatsappNumber" :required="false" placeholder="Whatsapp Number"></inputComponent>
+                </b-col>
+                <b-col>
+                  <inputComponent type="number" v-model="secondOwnerDetails.landlineNumber" :required="false" placeholder="Landline Number"></inputComponent>
+                </b-col>
+              </b-row>
+            </div>
+          </div>
           <b-row class="labels">
             <b-col>
-              <h5>Address Information</h5>
+              <h5>Registered Address</h5>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Address" v-model="agent.address" :state="validateAddress"></b-form-input>
-                <b-form-invalid-feedback :state="validateAddress">
-                  This is a required field
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="text" v-model="agent.address" :required="true" placeholder="Address"></inputComponent>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Country" v-model="agent.country" :state="validateCountry"></b-form-input>
-                <b-form-invalid-feedback :state="validateCountry">
-                  This is a required field
-                </b-form-invalid-feedback>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="State" v-model="agent.state" :state="validateState"></b-form-input>
-                <b-form-invalid-feedback :state="validateState">
-                  This is a required field
-                </b-form-invalid-feedback>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="City" v-model="agent.city" :state="validateCity"></b-form-input>
-                <b-form-invalid-feedback :state="validateCity">
-                  This is a required field
-                </b-form-invalid-feedback>
+              <b-form-group label="Location (City, State, Country)">
+                <vue-google-autocomplete @placechanged="getLocation" v-model=location autocomplete="off" id="map" classname="form-control" placeholder="City, State, Country" types="(cities)"></vue-google-autocomplete>
               </b-form-group>
             </b-col>
           </b-row>
@@ -155,30 +126,27 @@
               <h5>Purchase Division Head</h5>
             </b-col>
           </b-row>
-          <b-row>
+          <b-row class="checkbox-row">
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Name" v-model="purchaseDivisionHeadInfo.name"></b-form-input>
-              </b-form-group>
+              <b-form-checkbox v-model="purchaseCheck" :value="true" :unchecked-value="false" @change="modifyInfo">Check if information of the person is same as above</b-form-checkbox>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" v-model="purchaseDivisionHeadInfo.mobileNumber" placeholder="Mobile Number"></b-form-input>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group>
-                <b-form-input type="text" v-model="purchaseDivisionHeadInfo.whatsappNumber" placeholder="Whatsapp Number"></b-form-input>
-              </b-form-group>
+              <inputComponent type="text" placeholder="Name" v-model="agent.purchaseDivisionHead.name" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="email" placeholder="Email" v-model="purchaseDivisionHeadInfo.email"></b-form-input>
-              </b-form-group>
+              <inputComponent type="number" placeholder="Mobile Number" v-model="agent.purchaseDivisionHead.mobileNumber" :required="true"></inputComponent>
+            </b-col>
+            <b-col>
+              <inputComponent type="number" placeholder="Whatsapp Number" v-model="agent.purchaseDivisionHead.whatsappNumber" :required="true"></inputComponent>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <inputComponent type="email" placeholder="Email" v-model="agent.purchaseDivisionHead.email" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row class="labels">
@@ -186,30 +154,27 @@
               <h5>Account Division Head</h5>
             </b-col>
           </b-row>
-          <b-row>
+          <b-row class="checkbox-row">
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Name" v-model="accountDivisionHeadInfo.name"></b-form-input>
-              </b-form-group>
+              <b-form-checkbox v-model="accountCheck" :value="true" :unchecked-value="false" @change="modifyInfoAccount">Check if information of the person is same as above</b-form-checkbox>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" v-model="accountDivisionHeadInfo.mobileNumber" placeholder="Mobile Number"></b-form-input>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group>
-                <b-form-input type="text" v-model="accountDivisionHeadInfo.whatsappNumber" placeholder="Whatsapp Number"></b-form-input>
-              </b-form-group>
+              <inputComponent type="text" placeholder="Name" v-model="agent.accountDivisionHead.name" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="email" placeholder="Email" v-model="accountDivisionHeadInfo.email"></b-form-input>
-              </b-form-group>
+              <inputComponent type="number" placeholder="Mobile Number" v-model="agent.accountDivisionHead.mobileNumber" :required="true"></inputComponent>
+            </b-col>
+            <b-col>
+              <inputComponent type="number" placeholder="Whatsapp Number" v-model="agent.accountDivisionHead.whatsappNumber" :required="true"></inputComponent>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <inputComponent type="email" placeholder="Email" v-model="agent.accountDivisionHead.email" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row>
@@ -229,8 +194,15 @@
             </b-col>
             <b-col>
               <b-form-group>
-                <b-form-input type="text" placeholder="Name of Group" v-model="travelGroup"></b-form-input>
+                <b-form-input type="text" list="group-options" placeholder="Name of Group" v-model="selectedTravelGroup"></b-form-input>
+                <b-form-datalist id="group-options" :options="travelGroupOptions"></b-form-datalist>
               </b-form-group>
+              <b-btn class="add-btn" variant="success" @click="addGroup">Add</b-btn>
+            </b-col>
+          </b-row>
+          <b-row v-if="agent.travelGroups.length > 0">
+            <b-col offset="6">
+              <div v-for="name in agent.travelGroups" class="group-div"><span class="group-name">{{name}}</span></div>
             </b-col>
           </b-row>
           <b-row>
@@ -242,6 +214,14 @@
                 <b-col><b-form-radio v-model="agent.isIATA" :value="true">Yes</b-form-radio></b-col>
                 <b-col><b-form-radio v-model="agent.isIATA" :value="false">No</b-form-radio></b-col>
               </b-row>
+            </b-col>
+          </b-row>
+          <b-row v-if="agent.isIATA">
+            <b-col>
+              <h5>Enter your IATA Number</h5>
+            </b-col>
+            <b-col>
+              <b-form-input type="text" placeholder="IATA Number" v-model="agent.IATANumber"></b-form-input>
             </b-col>
           </b-row>
           <b-row class="labels">
@@ -274,59 +254,166 @@
 </template>
 
 <script>
+  import inputComponent from '../../components/inputComponent'
+  import VueGoogleAutocomplete from 'vue-google-autocomplete'
+
   export default {
     name: 'Agent-Register',
+    components: {
+      VueGoogleAutocomplete,
+      inputComponent
+    },
     data() {
       return {
         agent: {
           email: null,
           password: null,
           agencyName: null,
-          ownerInfo: {
-            firstName: null,
-            lastName: null,
-            mobileNumber: null,
-            whatsappNumber: null,
-            landlineNumber: null
-          },
-          agencyType: null,
+          ownerInfo: [],
+          agencyType: "Proprietary",
           address: null,
           city: null,
           state: null,
-          country: null,
-          purchaseDivisionHead: [],
-          accountDivisionHead: [],
+          country: "India",
+          purchaseDivisionHead: {
+            name: null,
+            mobileNumber: null,
+            whatsappNumber: null,
+            email: null
+          },
+          accountDivisionHead: {
+            name: null,
+            mobileNumber: null,
+            whatsappNumber: null,
+            email: null
+          },
           isPartOfTravelGroup: false,
           travelGroups: [],
           isIATA: false,
+          IATANumber: null,
           agentGST: "",
-          agentPAN: ""
+          agentPAN: "",
         },
-        purchaseDivisionHeadInfo: {
-          name: null,
+        ownerDetails: {
+          firstName: null,
+          lastName: null,
           mobileNumber: null,
           whatsappNumber: null,
-          email: null
+          landlineNumber: null
         },
-        accountDivisionHeadInfo: {
-          name: null,
+        secondOwnerDetails: {
+          firstName: null,
+          lastName: null,
           mobileNumber: null,
           whatsappNumber: null,
-          email: null
+          landlineNumber: null
         },
         emailExists: false,
+        agencyNameExists: false,
         confirmPassword: null,
+        secondPerson: false,
         success: false,
-        travelGroup: null
+        selectedTravelGroup: null,
+        travelGroupOptions: [],
+        purchaseCheck: false,
+        accountCheck: false,
+        agencyTypeOptions: ["Proprietary", "Partnership", "PPL", "PVT LTD", "LTD"],
+        location: null
+      }
+    },
+    methods: {
+      addGroup() {
+        this.agent.travelGroups.push(this.selectedTravelGroup)
+        let i = this.travelGroupOptions.indexOf(this.selectedTravelGroup)
+        this.travelGroupOptions.splice(i, 1)
+        this.selectedTravelGroup = null
+      },
+      modifyInfo() {
+        if(!this.purchaseCheck){
+          this.agent.purchaseDivisionHead.name = this.ownerDetails.firstName + ' ' + this.ownerDetails.lastName
+          this.agent.purchaseDivisionHead.email = this.agent.email
+          this.agent.purchaseDivisionHead.mobileNumber = this.ownerDetails.mobileNumber
+          this.agent.purchaseDivisionHead.whatsappNumber = this.ownerDetails.whatsappNumber
+        }
+        else {
+          this.purchaseDivisionHead.name = null
+          this.purchaseDivisionHead.email = null
+          this.purchaseDivisionHead.mobileNumber = null
+          this.purchaseDivisionHead.whatsappNumber = null
+        }
+      },
+      modifyInfoAccount() {
+        if(!this.accountCheck){
+          this.agent.accountDivisionHead.name = this.ownerDetails.firstName + ' ' + this.ownerDetails.lastName
+          this.agent.accountDivisionHead.email = this.agent.email
+          this.agent.accountDivisionHead.mobileNumber = this.ownerDetails.mobileNumber
+          this.agent.accountDivisionHead.whatsappNumber = this.ownerDetails.whatsappNumber
+        }
+        else {
+          this.agent.accountDivisionHead.name = null
+          this.agent.accountDivisionHead.email = null
+          this.agent.accountDivisionHead.mobileNumber = null
+          this.agent.accountDivisionHead.whatsappNumber = null
+        }
+      },
+      getLocation(addressData, placeResultData, id) {
+        this.location = placeResultData.formatted_address
+      },
+      verifyAgencyName() {
+        this.$http.get(process.env.VUE_APP_API_URL + "/agent/agencyName/" + this.agent.agencyName).then(function(response) {
+          this.agencyNameExists = response.body.message === "Agency Name already exists"
+        })
+      },
+      async verifyEmail() {
+        let agentEmailExists = false, groupEmailExists = false, hotelEmailExists = false, self = this
+        await this.$http.get(process.env.VUE_APP_API_URL + "/agent/verifyEmail/" + this.agent.email).then(function(response) {
+          agentEmailExists = response.body.message === "Email ID already exists"
+        })
+        await this.$http.get(process.env.VUE_APP_API_URL + "/hotel/verifyEmail/" + this.agent.email).then(function(response) {
+          hotelEmailExists = response.body.message === "Email ID already exists"
+        })
+        await this.$http.get(process.env.VUE_APP_API_URL + "/group/verifyEmail/" + this.agent.email).then(function(response) {
+          groupEmailExists = response.body.message === "Email ID already exists"
+        })
+
+        if(hotelEmailExists || agentEmailExists || groupEmailExists)
+          this.emailExists = true
+        if(!hotelEmailExists && !agentEmailExists && !groupEmailExists)
+          this.emailExists = false
+      },
+      create() {
+        this.agent.ownerInfo.push(this.ownerDetails)
+        if(this.secondOwnerDetails.firstName)
+          this.agent.ownerInfo.push(this.secondOwnerDetails)
+
+
+        if(this.location) {
+          let location = this.location.split(",")
+          this.agent.city = location[0]
+          this.agent.state = location[1]
+          this.agent.country = location[2]
+        }
+
+        let agent = this.agent
+        if(agent.agencyName && agent.email && agent.password && this.confirmPassword && agent.agencyType && this.ownerDetails.firstName && this.ownerDetails.lastName && this.ownerDetails.mobileNumber && this.ownerDetails.whatsappNumber && this.ownerDetails.landlineNumber && agent.address && agent.city && agent.state && agent.country && agent.accountDivisionHead.name && agent.accountDivisionHead.mobileNumber && agent.accountDivisionHead.whatsappNumber && agent.accountDivisionHead.email && agent.purchaseDivisionHead.name  && agent.purchaseDivisionHead.mobileNumber && agent.purchaseDivisionHead.whatsappNumber && agent.purchaseDivisionHead.email && !this.emailExists && !this.agencyNameExists){
+
+          this.$http.post(process.env.VUE_APP_API_URL + "/agent/create", agent).then(function(res) {
+            document.querySelector(".submit-btn").setAttribute('disabled', true)
+            let inputs = document.querySelectorAll("input")
+            inputs.forEach(function(el) {
+              el.setAttribute('disabled', true)
+            })
+            this.success = true
+          })
+        }
+        else {
+          alert("Form is incomplete")
+        }
       }
     },
     computed: {
       validateEmail() {
         if(this.agent.email === "")
-          return false
-      },
-      validatePass() {
-        if(this.agent.password === "")
           return false
       },
       validateConfPass() {
@@ -338,113 +425,30 @@
       validateAgencyName() {
         if(this.agent.agencyName === "")
           return false
-      },
-      validateOwnerFName() {
-        if(this.agent.ownerInfo.firstName === "")
-          return false
-      },
-      validateOwnerLName() {
-        if(this.agent.ownerInfo.lastName === "")
-          return false
-      },
-      validateOwnerMobile() {
-        if(this.agent.ownerInfo.mobileNumber === null)
-          return null
-        else
-          return this.agent.ownerInfo.mobileNumber.length === 10
-      },
-      validateOwnerWhatsapp() {
-        if(this.agent.ownerInfo.whatsappNumber === null)
-          return null
-        else
-          return this.agent.ownerInfo.whatsappNumber.length === 10
-      },
-      validateOwnerLandline() {
-        if(this.agent.ownerInfo.landlineNumber === null)
-          return null
-        else
-          return this.agent.ownerInfo.landlineNumber.length === 10
-      },
-      validateAgencyType() {
-        if(this.agent.agencyType === "")
-          return false
-      },
-      validateAddress() {
-        if(this.agent.address === "")
-          return false
-      },
-      validateCity() {
-        if(this.agent.city === "")
-          return false
-      },
-      validateState() {
-        if(this.agent.state === "")
-          return false
-      },
-      validateCountry() {
-        if(this.agent.country === "")
-          return false
       }
     },
-    methods: {
-      verifyEmail() {
-        this.$http.post("https://kampus-tour.herokuapp.com/agent/verifyEmail", {
-          email: this.agent.email
-        }).then(function(response) {
-          this.emailExists = response.body.message === "Email ID already exists";
+    created() {
+      let self = this
+      this.$http.get(process.env.VUE_APP_API_URL + '/tg/').then(function(response) {
+        response.body.forEach(function(element) {
+          self.travelGroupOptions.push(element.Name)
         })
-      },
-      create() {
-        if(this.travelGroup)
-          this.agent.travelGroups.push(this.travelGroup)
-        if(this.accountDivisionHeadInfo.name)
-          this.agent.accountDivisionHead.push(this.accountDivisionHeadInfo)
-        if(this.purchaseDivisionHeadInfo.name)
-          this.agent.purchaseDivisionHead.push(this.purchaseDivisionHeadInfo)
-
-        let agent = this.agent
-        if(agent.agencyName && agent.email && agent.password && this.confirmPassword && agent.agencyType && agent.ownerInfo.firstName && agent.ownerInfo.lastName && agent.ownerInfo.mobileNumber && agent.ownerInfo.whatsappNumber && agent.ownerInfo.whatsappNumber && agent.address && agent.city && agent.state && agent.country && !this.emailExists){
-          this.$http.post("https://kampus-tour.herokuapp.com/agent/create", agent).then(function(res) {
-            document.querySelector(".submit-btn").setAttribute('disabled', true)
-            let inputs = document.querySelectorAll("input")
-            inputs.forEach(function(el) {
-              el.setAttribute('disabled', true)
-            })
-            this.success = true
-          })
-        }
-      }
+      })
     }
   }
 </script>
 
 <style lang="sass" scoped>
-  #register
-    padding-bottom: 20px
-    padding-top: 20px
-    background: #2b8ebb
-    overflow-x: hidden
-
-  .form
-    box-shadow: 0 0 8px 4px #454545
-    border-radius: 5px
-    padding: 10px
-    background: white
-
-  h1
-    text-align: center
-    font-weight: bold
-    color: white
-
-
-  .labels
-    margin-top: 20px
+  @import '../../sass/register'
+  .add-btn
     margin-bottom: 10px
 
-  .error
-    color: red
-    font-weight: bold
-
-  .alert-success
-    margin-top: 20px
+  .group-div
+    display: inline-block
+    margin: 5px 2px
+    .group-name
+      background: #aaaaaa
+      padding: 5px
+      border-radius: 5px
+      color: white
 </style>

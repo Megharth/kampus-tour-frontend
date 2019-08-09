@@ -203,7 +203,10 @@
         hotelOptions: [],
         hotelCities: [],
         success: false,
-        emailExists: false
+        emailExists: false,
+        countryCheck: false,
+        regionCheck: false,
+        cityCheck: false
       }
     },
     computed: {
@@ -285,44 +288,5 @@
 </script>
 
 <style lang="sass" scoped>
-  #register
-    padding-bottom: 20px
-    padding-top: 20px
-    background: #2b8ebb
-    overflow-x: hidden
-
-    .form
-      box-shadow: 0 0 8px 4px #454545
-      border-radius: 5px
-      padding: 10px
-      background: white
-
-    h1
-      text-align: center
-      font-weight: bold
-      color: white
-
-
-    .labels
-      margin-top: 20px
-      margin-bottom: 10px
-
-    .error
-      color: red
-      font-weight: bold
-
-    .alert-success
-      margin-top: 20px
-
-    .hotel-list
-      text-align: center
-      margin-bottom: 10px
-      .hotel-div
-        display: inline-block
-        margin: 5px 2px
-        .hotel-name
-          background: #aaaaaa
-          padding: 5px
-          border-radius: 5px
-          color: white
+  @import '../../sass/register'
 </style>

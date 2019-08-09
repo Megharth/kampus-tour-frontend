@@ -11,12 +11,7 @@
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Name of Your Hotel" v-model="hotel.hotelName" :state="validateName"></b-form-input>
-                <b-form-invalid-feedback :state="validateName">
-                  This is a required field
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="text" placeholder="Name Of Hotel as per GST" v-model="hotel.hotelName" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row>
@@ -34,12 +29,7 @@
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="password" placeholder="Password" required v-model="hotel.password" :state="validatePass"></b-form-input>
-                <b-form-invalid-feedback :state="validatePass">
-                  This is a required field
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="password" placeholder="Password" v-model="hotel.password" :required="true"></inputComponent>
             </b-col>
             <b-col>
               <b-form-group>
@@ -52,7 +42,7 @@
           </b-row>
           <b-row>
             <b-col>
-              <h5>Are you part of any Hotel Group?</h5>
+              <h5>Are you affiliated with any Hotel Group?</h5>
             </b-col>
             <b-col>
               <b-form-group>
@@ -85,53 +75,22 @@
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Address" v-model="hotel.hotelAddress" :state="validateAddress"></b-form-input>
-                <b-form-invalid-feedback :state="validateAddress">
-                  This is a required field
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="text" placeholder="Address" v-model="hotel.hotelAddress" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Country" v-model="hotel.hotelCountry" :state="validateCountry"></b-form-input>
-                <b-form-invalid-feedback :state="validateCountry">
-                  This is a required field
-                </b-form-invalid-feedback>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="State" v-model="hotel.hotelState" :state="validateState"></b-form-input>
-                <b-form-invalid-feedback :state="validateState">
-                  This is a required field
-                </b-form-invalid-feedback>
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="City" v-model="hotel.hotelCity" :state="validateCity"></b-form-input>
-                <b-form-invalid-feedback :state="validateCity">
-                  This is a required field
-                </b-form-invalid-feedback>
+              <b-form-group label="Location (City, State, Country)">
+                <vue-google-autocomplete @placechanged="getLocation" autocomplete="off" id="map" classname="form-control" placeholder="City, State, Country" types="(cities)"></vue-google-autocomplete>
               </b-form-group>
             </b-col>
           </b-row>
-          <b-row>
+          <b-row class="contact">
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Landline Number" v-model="hotel.hotelContact.hotelLandline":state="validateLandline"></b-form-input>
-                <b-form-invalid-feedback :state="validateLandline">
-                  Number should be of 10 digits
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="number" placeholder="Landline Number" v-model="hotel.hotelContact.hotelLandline" :required="true"></inputComponent>
             </b-col>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Website" v-model="hotel.hotelContact.hotelWebsite"></b-form-input>
-              </b-form-group>
+              <inputComponent type="text" placeholder="Website" v-model="hotel.hotelContact.hotelWebsite" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row class="labels">
@@ -141,20 +100,10 @@
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Name" v-model="hotel.hotelSalesTeam.hotelSalesIncharge.name" :state="validateSalesInchargeName"></b-form-input>
-                <b-form-invalid-feedback :state="validateSalesInchargeName">
-                  This is a required field
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="text" placeholder="Name" v-model="hotel.hotelSalesTeam.hotelSalesIncharge.name" :required="true"></inputComponent>
             </b-col>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Phone Number" v-model="hotel.hotelSalesTeam.hotelSalesIncharge.number" :state="validateSalesInchargeNum"></b-form-input>
-                <b-form-invalid-feedback :state="validateSalesInchargeNum">
-                  Number should be of 10 digits
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="number" placeholder="Phone Number" v-model="hotel.hotelSalesTeam.hotelSalesIncharge.number" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row class="labels">
@@ -164,20 +113,10 @@
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Name" v-model="hotel.hotelSalesTeam.hotelCountryHead.name" :state="validateCountryHeadName"></b-form-input>
-                <b-form-invalid-feedback :state="validateCountryHeadName">
-                  This is a required field
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="text" placeholder="Name" v-model="hotel.hotelSalesTeam.hotelCountryHead.name" :required="true"></inputComponent>
             </b-col>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Phone Number" v-model="hotel.hotelSalesTeam.hotelCountryHead.number" :state="validateCountryHeadNum"></b-form-input>
-                <b-form-invalid-feedback :state="validateCountryHeadNum">
-                  Number should be of 10 digits
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="number" placeholder="Phone Number" v-model="hotel.hotelSalesTeam.hotelCountryHead.number" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row class="labels">
@@ -187,20 +126,10 @@
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Name" v-model="hotel.hotelSalesTeam.hotelRegionHead.name" :state="validateRegionHeadName"></b-form-input>
-                <b-form-invalid-feedback :state="validateRegionHeadName">
-                  This is a required field
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="text" placeholder="Name" v-model="hotel.hotelSalesTeam.hotelRegionHead.name" :required="true"></inputComponent>
             </b-col>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" placeholder="Phone Number" v-model="hotel.hotelSalesTeam.hotelRegionHead.number":state="validateRegionHeadNum"></b-form-input>
-                <b-form-invalid-feedback :state="validateRegionHeadNum">
-                  Number should be of 10 digits
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <inputComponent type="number" placeholder="Phone Number" v-model="hotel.hotelSalesTeam.hotelRegionHead.number" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row>
@@ -210,14 +139,10 @@
           </b-row>
           <b-row>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" v-model="hotel.hotelGST" placeholder="GST Number"></b-form-input>
-              </b-form-group>
+              <inputComponent type="text" placeholder="GST Number" v-model="hotel.hotelGST" :required="false"></inputComponent>
             </b-col>
             <b-col>
-              <b-form-group>
-                <b-form-input type="text" v-model="hotel.hotelPAN" placeholder="PAN Number"></b-form-input>
-              </b-form-group>
+              <inputComponent type="text" placeholder="PAN Number" v-model="hotel.hotelPAN" :required="false"></inputComponent>
             </b-col>
           </b-row>
           <b-row>
@@ -233,8 +158,14 @@
 </template>
 
 <script>
+  import inputComponent from '../../components/inputComponent'
+  import VueGoogleAutocomplete from 'vue-google-autocomplete'
   export default {
     name: 'Hotel-Register',
+    components: {
+      inputComponent,
+      VueGoogleAutocomplete
+    },
     data() {
       return {
         hotel: {
@@ -280,20 +211,13 @@
         },
         success: false,
         confirmPassword: null,
-        emailExists: false
+        emailExists: false,
+        location: null
       }
     },
     computed: {
-      validateName() {
-        if(this.hotel.hotelName === "")
-          return false
-      },
       validateEmail() {
         if(this.hotel.email === "")
-          return false
-      },
-      validatePass() {
-        if(this.hotel.password === "")
           return false
       },
       validateConfPass() {
@@ -301,70 +225,39 @@
           return null
         else
           return this.confirmPassword === this.hotel.password
-      },
-      validateAddress() {
-        if(this.hotel.hotelAddress === "")
-          return false
-      },
-      validateCity() {
-        if(this.hotel.hotelCity === "")
-          return false
-      },
-      validateState() {
-        if(this.hotel.hotelState === "")
-          return false
-      },
-      validateCountry() {
-        if(this.hotel.hotelCountry === "")
-          return false
-      },
-      validateLandline() {
-        if(this.hotel.hotelContact.hotelLandline === null)
-          return null
-        else
-          return this.hotel.hotelContact.hotelLandline.length === 10
-      },
-      validateSalesInchargeName() {
-        if(this.hotel.hotelSalesTeam.hotelSalesIncharge.name === "")
-          return false
-      },
-      validateSalesInchargeNum() {
-        if(this.hotel.hotelSalesTeam.hotelSalesIncharge.number === null)
-          return null
-        else
-          return this.hotel.hotelSalesTeam.hotelSalesIncharge.number.length === 10
-      },
-      validateCountryHeadName() {
-        if(this.hotel.hotelSalesTeam.hotelCountryHead.name === "")
-          return false
-      },
-      validateCountryHeadNum() {
-        if(this.hotel.hotelSalesTeam.hotelCountryHead.number === null)
-          return null
-        else
-          return this.hotel.hotelSalesTeam.hotelCountryHead.number.length === 10
-      },
-      validateRegionHeadName() {
-        if(this.hotel.hotelSalesTeam.hotelRegionHead.name === "")
-          return false
-      },
-      validateRegionHeadNum() {
-        if(this.hotel.hotelSalesTeam.hotelRegionHead.number === null)
-          return null
-        else
-          return this.hotel.hotelSalesTeam.hotelRegionHead.number.length === 10
       }
     },
     methods: {
-      verifyEmail() {
-        this.$http.post("https://kampus-tour.herokuapp.com/hotel/verifyEmail", {
-          email: this.hotel.email
-        }).then(function(response) {
-          this.emailExists = response.body.message === "Email ID already exists";
+      getLocation(addressData, placeResultData, id) {
+        this.location = placeResultData.formatted_address
+      },
+      async verifyEmail() {
+        let agentEmailExists = false, groupEmailExists = false, hotelEmailExists = false, self = this
+        await this.$http.get(process.env.VUE_APP_API_URL + "/agent/verifyEmail/" + this.hotel.email).then(function(response) {
+          agentEmailExists = response.body.message === "Email ID already exists"
         })
+        await this.$http.get(process.env.VUE_APP_API_URL + "/hotel/verifyEmail/" + this.hotel.email).then(function(response) {
+          hotelEmailExists = response.body.message === "Email ID already exists"
+        })
+        await this.$http.get(process.env.VUE_APP_API_URL + "/group/verifyEmail/" + this.hotel.email).then(function(response) {
+          groupEmailExists = response.body.message === "Email ID already exists"
+        })
+
+        if(hotelEmailExists || agentEmailExists || groupEmailExists)
+          this.emailExists = true
+        if(!hotelEmailExists && !agentEmailExists && !groupEmailExists)
+          this.emailExists = false
       },
       create() {
         let hotel = this.hotel
+        if(this.location){
+          let location = this.location.split(',')
+          this.hotel.hotelCity = location[0]
+          this.hotel.hotelState = location[1]
+          this.hotel.hotelCountry = location[2]
+        }
+        if(this.hotel.nameOfGroup === null)
+          this.hotel.nameOfGroup = ''
 
         if(this.hotel.hotelName && this.hotel.email && this.hotel.password && this.confirmPassword && this.hotel.hotelAddress && this.hotel.hotelCity && this.hotel.hotelState && this.hotel.hotelCountry && this.hotel.hotelContact.hotelLandline && this.hotel.hotelSalesTeam.hotelSalesIncharge.name && this.hotel.hotelSalesTeam.hotelSalesIncharge.number && this.hotel.hotelSalesTeam.hotelCountryHead.name && this.hotel.hotelSalesTeam.hotelCountryHead.number && this.hotel.hotelSalesTeam.hotelRegionHead.name && this.hotel.hotelSalesTeam.hotelRegionHead.number && !this.emailExists) {
 
@@ -401,7 +294,11 @@
             }
           })
         }
+        else {
+          alert("Please Complete the form before submitting")
+        }
       }
+
     },
     created() {
       let self = this
@@ -416,32 +313,7 @@
 </script>
 
 <style lang="sass" scoped>
-#register
-  padding-bottom: 20px
-  padding-top: 20px
-  background: #2b8ebb
-  overflow-x: hidden
-
-.form
-  box-shadow: 0 0 8px 4px #454545
-  border-radius: 5px
-  padding: 10px
-  background: white
-
-h1
-  text-align: center
-  font-weight: bold
-  color: white
-
-
-.labels
-  margin-top: 20px
-  margin-bottom: 10px
-
-.error
-  color: red
-  font-weight: bold
-
-.alert-success
-  margin-top: 20px
+  @import '../../sass/register'
+  .contact
+    margin-top: 15px
 </style>
