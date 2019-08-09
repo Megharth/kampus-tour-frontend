@@ -243,12 +243,22 @@
         else
           this.hotel.city = null
       },
-      verifyEmail() {
-        this.$http.post("https://kampus-tour.herokuapp.com/group/verifyEmail", {
-          email: this.group.email
-        }).then(function(response) {
-          this.emailExists = response.body.message === "Email ID already exists";
+      async verifyEmail() {
+        let agentEmailExists = false, groupEmailExists = false, hotelEmailExists = false, self = this
+        await this.$http.get(process.env.VUE_APP_API_URL + "/agent/verifyEmail/" + this.hotel.email).then(function(response) {
+          agentEmailExists = response.body.message === "Email ID already exists"
         })
+        await this.$http.get(process.env.VUE_APP_API_URL + "/hotel/verifyEmail/" + this.hotel.email).then(function(response) {
+          hotelEmailExists = response.body.message === "Email ID already exists"
+        })
+        await this.$http.get(process.env.VUE_APP_API_URL + "/group/verifyEmail/" + this.hotel.email).then(function(response) {
+          groupEmailExists = response.body.message === "Email ID already exists"
+        })
+
+        if(hotelEmailExists || agentEmailExists || groupEmailExists)
+          this.emailExists = true
+        if(!hotelEmailExists && !agentEmailExists && !groupEmailExists)
+          this.emailExists = false
       },
       create() {
         if(this.countrySalesHeadInfo.name)
@@ -262,7 +272,6 @@
 
         let group = this.group
         if(group.name && group.email && group.password && this.confirmPassword && !this.emailExists) {
-          console.log(group)
           this.$http.post("https://kampus-tour.herokuapp.com/group/create", group).then(function(response) {
             document.querySelector(".submit-btn").setAttribute('disabled', true)
             let inputs = document.querySelectorAll("input")
@@ -270,7 +279,6 @@
               el.setAttribute('disabled', true)
             })
             this.success = true
-            console.log(response)
           })
         }
       }
