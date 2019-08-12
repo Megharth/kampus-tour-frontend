@@ -13,6 +13,10 @@ body
   margin: 0
   padding: 0
   overflow-x: hidden
+  transition: all 0.3s ease-out
+
+::-webkit-scrollbar
+  display: none
 #app
   font-family: 'Lato', sans-serif
   height: 100%

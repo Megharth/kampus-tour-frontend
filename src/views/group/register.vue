@@ -281,6 +281,9 @@
             this.success = true
           })
         }
+        else {
+          alert("Form is incomplete!")
+        }
       }
     },
     created() {
