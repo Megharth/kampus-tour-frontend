@@ -1,0 +1,44 @@
+@import './variables'
+
+.slide-down-enter-active
+  animation: slide-down 0.3s ease-out
+
+@keyframes slide-down
+  0%
+    transform: translate(-50%, -100px)
+    opacity: 0
+  100%
+    transform: translate(-50%, 0)
+    opacity: 1
+#dashboard
+  min-height: 100vh
+  width: 100vw
+  .container
+    color: white
+    padding-top: 55px
+    padding-bottom: 80px
+    .update-btn
+      margin-top: 20px
+      background: $agentHeading
+      color: $agentBlue
+      padding: 15px
+      font-weight: bolder
+      text-transform: uppercase
+    .disableEdit
+      text-decoration: underline
+      cursor: pointer
+    .alert
+      position: fixed
+      top: 60px
+      left: 50%
+      transform: translateX(-50%)
+      z-index: 2
+    hr
+      background: #e2e3e5
+      box-shadow: 0 4px 6px #2b2d2f
+    h1.heading
+      color: #FBB13C
+      text-transform: capitalize
+    h3
+      text-decoration: underline
+      color: #FBB13C

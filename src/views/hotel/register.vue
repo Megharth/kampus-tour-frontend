@@ -1,5 +1,6 @@
 <template>
   <div id="register">
+    <headerComponent></headerComponent>
     <div class="container">
       <h1>Hotel Registration</h1>
       <b-form>
@@ -154,17 +155,23 @@
       </b-form>
       <b-alert variant="success" show v-if="success" align="center">Thank you for the response. Your response has been recorded</b-alert>
     </div>
+    <footerComponent></footerComponent>
   </div>
 </template>
 
 <script>
   import inputComponent from '../../components/inputComponent'
   import VueGoogleAutocomplete from 'vue-google-autocomplete'
+  import headerComponent from '../../components/headerCompnent'
+  import footerComponent from '../../components/footerComponent'
+
   export default {
     name: 'Hotel-Register',
     components: {
       inputComponent,
-      VueGoogleAutocomplete
+      VueGoogleAutocomplete,
+      headerComponent,
+      footerComponent
     },
     data() {
       return {
@@ -232,20 +239,25 @@
         this.location = placeResultData.formatted_address
       },
       async verifyEmail() {
-        let agentEmailExists = false, groupEmailExists = false, hotelEmailExists = false, self = this
-        await this.$http.get(process.env.VUE_APP_API_URL + "/agent/verifyEmail/" + this.hotel.email).then(function(response) {
-          agentEmailExists = response.body.message === "Email ID already exists"
-        })
-        await this.$http.get(process.env.VUE_APP_API_URL + "/hotel/verifyEmail/" + this.hotel.email).then(function(response) {
-          hotelEmailExists = response.body.message === "Email ID already exists"
-        })
-        await this.$http.get(process.env.VUE_APP_API_URL + "/group/verifyEmail/" + this.hotel.email).then(function(response) {
-          groupEmailExists = response.body.message === "Email ID already exists"
-        })
+        let agentEmailExists = false, groupEmailExists = false, hotelEmailExists = false, tgEamilExists = false
+        await Promise.all([
+          await this.$http.get(process.env.VUE_APP_API_URL + "/agent/verifyEmail/" + this.hotel.email).then(function(response) {
+            agentEmailExists = response.body.message === "Email ID already exists"
+          }),
+          await this.$http.get(process.env.VUE_APP_API_URL + "/hotel/verifyEmail/" + this.hotel.email).then(function(response) {
+            hotelEmailExists = response.body.message === "Email ID already exists"
+          }),
+          await this.$http.get(process.env.VUE_APP_API_URL + "/group/verifyEmail/" + this.hotel.email).then(function(response) {
+            groupEmailExists = response.body.message === "Email ID already exists"
+          }),
+          await this.$http.get(process.env.VUE_APP_API_URL + "/tg/verifyEmail/" + this.hotel.email).then(function(response) {
+            groupEmailExists = response.body.message === "Email ID already exists"
+          })
+        ])
 
-        if(hotelEmailExists || agentEmailExists || groupEmailExists)
+        if(hotelEmailExists || agentEmailExists || groupEmailExists || tgEamilExists)
           this.emailExists = true
-        if(!hotelEmailExists && !agentEmailExists && !groupEmailExists)
+        if(!hotelEmailExists && !agentEmailExists && !groupEmailExists && !tgEamilExists)
           this.emailExists = false
       },
       create() {
@@ -314,6 +326,8 @@
 
 <style lang="sass" scoped>
   @import '../../sass/register'
+  #register
+    background: #6969B3
   .contact
     margin-top: 15px
 </style>

@@ -8,7 +8,7 @@
             <div class="inputs">
               <inputComponent type="email" placeholder="Email Address" :required="true" v-model="email"></inputComponent>
               <inputComponent type="password" placeholder="Password" :required="true" v-model="password"></inputComponent>
-              <button class="d-block mx-auto" @click="login">Login</button>
+              <button class="d-block mx-auto submit-btn" @click="login">Login</button>
             </div>
           </div>
         </b-form>
@@ -19,7 +19,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-12 col-md-6">
-            <div class="user-card mx-auto" id="user-card-1" @click="$router.push('/agent/register')">
+            <div class="user-card mx-auto" id="user-card-1" @click="$router.push({ path: '/agent/register' })">
               <h1>Travel Agent</h1>
             </div>
           </div>
@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-12 col-md-6" @click="$router.push('/hotel/register')">
+          <div class="col-sm-12 col-md-6" @click="$router.push({ path: '/hotel/register' })">
             <div class="user-card mx-auto" id="user-card-3">
               <h1>Hotel</h1>
             </div>
@@ -43,16 +43,19 @@
         </div>
       </div>
     </section>
+    <footerComponent></footerComponent>
   </div>
 </template>
 
 <script>
 import inputComponent from '../components/inputComponent'
+import footerComponent from '../components/footerComponent'
 
 export default {
   name: 'home',
   components: {
     inputComponent,
+    footerComponent
   },
   data() {
     return {
@@ -61,7 +64,8 @@ export default {
     }
   },
   methods: {
-    async login() {
+    async login(event) {
+      event.preventDefault()
       if(this.email && this.password) {
         let agentEmailExists = false, groupEmailExists = false, hotelEmailExists = false, tgEmailExists = false, path = null
 
@@ -94,7 +98,14 @@ export default {
         this.$http.post(process.env.VUE_APP_API_URL + "/" + path + "/login/", {
           email, password
         }).then(function(response) {
-          console.log(response)
+          document.querySelector(".submit-btn").setAttribute('disabled', true)
+          let inputs = document.querySelectorAll("input")
+          inputs.forEach(function(el) {
+            el.setAttribute('disabled', true)
+          })
+          this.$store.commit('login', response.body)
+          console.log(process.env.VUE_APP_BASE_URL + path + "/dashboard")
+          this.$router.push(path + "/dashboard")
         }).catch(function(response) {
           alert(response.body.message)
         })
