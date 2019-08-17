@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.2f2e781b012d4f2bfdd6cef7d4e12553.js"
+  "/precache-manifest.48de6d629e5c8d49b007ad82e3a0cf38.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "kampus-tour-frontend"});
