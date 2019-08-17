@@ -5,7 +5,7 @@
         <b-form>
           <h1>Login</h1>
           <div class="container">
-            <div class="inputs">
+            <div class="inputs" @enter.native="login">
               <inputComponent type="email" placeholder="Email Address" :required="true" v-model="email"></inputComponent>
               <inputComponent type="password" placeholder="Password" :required="true" v-model="password"></inputComponent>
               <button class="d-block mx-auto submit-btn" @click="login">Login</button>
@@ -74,7 +74,6 @@ export default {
             agentEmailExists = response.body.message === "Email ID already exists"
             if(agentEmailExists)
               path = "agent"
-
           }),
           this.$http.get(process.env.VUE_APP_API_URL + "/hotel/verifyEmail/" + this.email).then(function(response) {
             hotelEmailExists = response.body.message === "Email ID already exists"
@@ -93,22 +92,26 @@ export default {
           })
         ])
 
-        let email = this.email, password = this.password
+        if(path !== null) {
+          let email = this.email, password = this.password
 
-        this.$http.post(process.env.VUE_APP_API_URL + "/" + path + "/login/", {
-          email, password
-        }).then(function(response) {
-          document.querySelector(".submit-btn").setAttribute('disabled', true)
-          let inputs = document.querySelectorAll("input")
-          inputs.forEach(function(el) {
-            el.setAttribute('disabled', true)
+          this.$http.post(process.env.VUE_APP_API_URL + "/" + path + "/login/", {
+            email, password
+          }).then(function(response) {
+            document.querySelector(".submit-btn").setAttribute('disabled', true)
+            let inputs = document.querySelectorAll("input")
+            inputs.forEach(function(el) {
+              el.setAttribute('disabled', true)
+            })
+            this.$store.commit('login', response.body)
+            console.log(process.env.VUE_APP_BASE_URL + path + "/dashboard")
+            this.$router.push(path + "/dashboard")
+          }).catch(function(response) {
+            alert(response.body.message)
           })
-          this.$store.commit('login', response.body)
-          console.log(process.env.VUE_APP_BASE_URL + path + "/dashboard")
-          this.$router.push(path + "/dashboard")
-        }).catch(function(response) {
-          alert(response.body.message)
-        })
+        }
+        else
+          alert("Email not found")
 
       }
       else {

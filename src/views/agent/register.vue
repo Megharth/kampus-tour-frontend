@@ -331,7 +331,7 @@
     },
     methods: {
       addGroup() {
-        this.agent.travelGroups.push(this.selectedTravelGroup)
+        this.agent.travelGroups.push(this.selectedTravelGroup.toLowerCase())
         let i = this.travelGroupOptions.indexOf(this.selectedTravelGroup)
         this.travelGroupOptions.splice(i, 1)
         this.selectedTravelGroup = null

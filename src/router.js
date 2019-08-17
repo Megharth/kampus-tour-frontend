@@ -7,7 +7,8 @@ import GroupRegistration from './views/group/register'
 import TGRegister from './views/travelGroup/register'
 import AgentDashboard from './views/agent/dashboard'
 import GroupDashboard from './views/group/dashboard'
-
+import HotelDashboard from './views/hotel/dashboard'
+import TGDashboard from './views/travelGroup/dashboard'
 import store from './store'
 
 Vue.use(Router)
@@ -30,6 +31,20 @@ export default new Router({
       path: '/hotel/register',
       name: 'hotel-register',
       component: HotelRegistration
+    },
+    {
+      path: '/hotel/dashboard',
+      name: 'hotel-dashboard',
+      component: HotelDashboard,
+      beforeEnter: (destination, source, next) => {
+        if(!store.state.user)
+          if(localStorage.getItem('user'))
+            next()
+          else
+            next('/')
+        else
+          next()
+      }
     },
 
     //AGENT ROUTES
@@ -62,7 +77,16 @@ export default new Router({
     {
       path: '/group/dashboard',
       name: 'group-dashboard',
-      component: GroupDashboard
+      component: GroupDashboard,
+      beforeEnter: (destination, source, next) => {
+        if(!store.state.user)
+          if(localStorage.getItem('user'))
+            next()
+          else
+            next('/')
+        else
+          next()
+      }
     },
 
     //TRAVEL GROUP ROUTES
@@ -70,6 +94,20 @@ export default new Router({
       path: '/tg/register',
       name: 'tg-register',
       component: TGRegister
+    },
+    {
+      path: '/tg/dashboard',
+      name: 'tg-dashboard',
+      component: TGDashboard,
+      beforeEnter: (destination, source, next) => {
+        if(!store.state.user)
+          if(localStorage.getItem('user'))
+            next()
+          else
+            next('/')
+        else
+          next()
+      }
     }
   ],
   scrollBehavior(to, from, savedPosition) {

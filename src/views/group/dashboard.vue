@@ -131,6 +131,11 @@
             alert('Your details are updated!')
             this.$router.go()
           }).catch(function(error) {
+            if(error.body.message === "jwt expired"){
+              alert("Session Expired")
+              this.$store.commit('logout')
+              this.$router.push('/')
+            }
             alert(error.body.message)
             this.$router.go()
           })
