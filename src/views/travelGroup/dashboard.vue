@@ -5,11 +5,16 @@
       <transition name="slide-down">
         <b-alert show v-if="editMode">Edit mode is not available for your section</b-alert>
       </transition>
-      <h1 class="heading">{{user.Name}}</h1>
+      <div>
+        <h1 class="heading">{{user.Name}}</h1>
+        <h5 v-if="agents">Agents in your Group: {{agents.length}}</h5>
+      </div>
       <hr>
       <h3>Agents</h3>
-      <div class="row agent-row">
-        <div class="agent col-sm-3 mx-auto" v-for="agent in agents">
+      <div class="row agent-row" v-for="(value, key) in cityReport">
+        <div class="col-sm-3">{{key}}</div>
+        <div class="col-sm-3">{{value}}</div>
+        <!--<div class="agent col-sm-3 mx-auto" v-for="agent in agents">
           <h4 class="name">{{agent.agencyName}}</h4>
           <div class="address">{{agent.address}}, {{agent.city}}, {{agent.state}}, {{agent.country}}</div>
           <hr>
@@ -17,7 +22,15 @@
             <span class="owner-label">Owner(s)</span>
             <div class="owner" v-for="owner in agent.ownerInfo">{{owner.firstName}} {{owner.lastName}}</div>
           </div>
-        </div>
+        </div>--><!--<div class="agent col-sm-3 mx-auto" v-for="agent in agents">
+          <h4 class="name">{{agent.agencyName}}</h4>
+          <div class="address">{{agent.address}}, {{agent.city}}, {{agent.state}}, {{agent.country}}</div>
+          <hr>
+          <div class="owners">
+            <span class="owner-label">Owner(s)</span>
+            <div class="owner" v-for="owner in agent.ownerInfo">{{owner.firstName}} {{owner.lastName}}</div>
+          </div>
+        </div>-->
       </div>
     </div>
     <footerComponent></footerComponent>
@@ -35,7 +48,8 @@
       return {
         user: null,
         editMode: false,
-        agents: null
+        agents: null,
+        cityReport: {}
       }
     },
     components: {
@@ -57,9 +71,24 @@
       }
       else
         this.$router.push('/')
+
+      let self = this
       this.$http.get(process.env.VUE_APP_API_URL + '/agent/travelGroup/' + this.user.Name.toLowerCase()).then(function(response) {
         this.agents = response.body.message
+        let cities = this.agents.map(function(agent) {
+          return agent.city
+        })
+
+        cities.forEach(function(city) {
+          self.cityReport[city] = 0
+        })
+        cities.forEach(function(city) {
+          self.cityReport[city]++
+        })
+
+        console.log(this.cityReport)
       })
+
     },
     mounted() {
       let inputs = document.querySelectorAll('input')
