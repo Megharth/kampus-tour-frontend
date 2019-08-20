@@ -6,7 +6,7 @@
         <b-alert show v-if="editMode">Edit mode is not available for your section</b-alert>
       </transition>
       <div>
-        <h1 class="heading">{{user.Name}}</h1>
+        <h1 class="heading">{{user.name}}</h1>
         <h5 v-if="agents">Agents in your Group: {{agents.length}}</h5>
       </div>
       <hr>
@@ -14,6 +14,7 @@
       <div class="row agent-row" v-for="(value, key) in cityReport">
         <div class="col-sm-3">{{key}}</div>
         <div class="col-sm-3">{{value}}</div>
+        <div class="col-sm-3"><button class="btn" @click="createReport(key)">Get Report</button></div>
         <!--<div class="agent col-sm-3 mx-auto" v-for="agent in agents">
           <h4 class="name">{{agent.agencyName}}</h4>
           <div class="address">{{agent.address}}, {{agent.city}}, {{agent.state}}, {{agent.country}}</div>
@@ -41,6 +42,10 @@
   import inputComponent from '../../components/inputComponent'
   import headerComponent from '../../components/headerCompnent'
   import footerComponent from '../../components/footerComponent'
+  import pdfMake from 'pdfmake/build/pdfmake.js';
+  import pdfFonts from 'pdfmake/build/vfs_fonts.js';
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 
   export default {
     name: 'tg-dashboard',
@@ -60,6 +65,52 @@
     methods: {
       edit() {
         this.editMode = !this.editMode
+      },
+      createReport(city) {
+        /*let wb = xlsx.utils.book_new()
+        wb.Props = {
+          Title: city + " Agent List",
+          Author: "Kontree"
+        }*/
+        // wb.SheetNames.push("Agents")
+        /*let ws_data = [
+          ["Agency Name", "Owner Name", "Email", "Contact"]
+        ]*/
+
+        /*let ws = xlsx.utils.aoa_to_sheet(ws_data)
+        wb.Sheets["Agents"] = ws
+
+        let wbOut = xlsx.write(wb, {bookType:'xlsx', type:'binary'})
+        saveAs(new Blob((ws_data), {type: 'text/plain;charset=utf-8'}), city + " Agent List.txt")
+
+        */
+
+        const document = {
+          content: [
+            {
+              layout: 'lightHorizontalLines',
+              table: {
+                headerRows: 1,
+                width: ['20%', '30%', '35%', '15%'],
+                body: [
+                        ['Agency Name', 'Owner Name', 'Email', 'Contact']
+                ]
+              }
+            }
+          ]
+        }
+
+        this.agents.forEach(function(agent) {
+          if(agent.city === city)
+            document.content[0].table.body.push(
+                    [agent.agencyName.toUpperCase(), agent.ownerInfo[0].firstName + " " + agent.ownerInfo[0].lastName, agent.email, agent.ownerInfo[0].mobileNumber]
+            )
+        })
+
+        console.log()
+
+        pdfMake.createPdf(document).download(city + " Agent List")
+
       }
     },
     created() {
@@ -71,10 +122,9 @@
       }
       else
         this.$router.push('/')
-
       let self = this
-      this.$http.get(process.env.VUE_APP_API_URL + '/agent/travelGroup/' + this.user.Name.toLowerCase()).then(function(response) {
-        this.agents = response.body.message
+      this.$http.get(process.env.VUE_APP_API_URL + '/agent/travelGroup/' + this.user.name.toLowerCase()).then(function(response) {
+        self.agents = response.body.message
         let cities = this.agents.map(function(agent) {
           return agent.city
         })
@@ -86,7 +136,6 @@
           self.cityReport[city]++
         })
 
-        console.log(this.cityReport)
       })
 
     },

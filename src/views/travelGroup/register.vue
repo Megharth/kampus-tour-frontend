@@ -74,7 +74,7 @@
         tg: {
           email: null,
           password: null,
-          Name: null
+          name: null
         },
         confirmPassword: null,
         emailExists: false,
@@ -129,7 +129,7 @@
       create() {
         if(this.tg.Name && this.tg.password && this.confirmPassword && this.tg.email && !this.emailExists && !this.tgNameExists) {
           this.tg.Name = this.tg.Name.toLowerCase()
-          this.$http.post(process.env.VUE_APP_API_URL + "/tg/create", tg).then(function(response) {
+          this.$http.post(process.env.VUE_APP_API_URL + "/tg/create", this.tg).then(function(response) {
             document.querySelector(".submit-btn").setAttribute('disabled', true)
             let inputs = document.querySelectorAll("input")
             inputs.forEach(function(el) {

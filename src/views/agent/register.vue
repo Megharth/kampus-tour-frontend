@@ -446,7 +446,7 @@
       let self = this
       this.$http.get(process.env.VUE_APP_API_URL + '/tg/').then(function(response) {
         response.body.forEach(function(element) {
-          self.travelGroupOptions.push(element.Name)
+          self.travelGroupOptions.push(element.name)
         })
       })
     }
