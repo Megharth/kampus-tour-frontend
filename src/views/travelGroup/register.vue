@@ -8,7 +8,7 @@
           <b-row>
             <b-col>
               <b-form-group>
-                <b-form-input type="text" placeholder="Travel Group Name" v-model="tg.Name" :state="validateName" @blur="verifyName"></b-form-input>
+                <b-form-input type="text" placeholder="Travel Group Name" v-model="tg.name" :state="validateName" @blur="verifyName"></b-form-input>
                 <b-form-invalid-feedback :state="validateName">
                   This is a required field
                 </b-form-invalid-feedback>
@@ -94,7 +94,7 @@
           return false
       },
       validateName() {
-        if(this.tg.Name === "")
+        if(this.tg.name === "")
           return false
       }
     },
@@ -122,13 +122,13 @@
           this.emailExists = false
       },
       async verifyName() {
-        this.$http.get(process.env.VUE_APP_API_URL + "/tg/tgName/" + this.tg.Name).then(function(response) {
+        this.$http.get(process.env.VUE_APP_API_URL + "/tg/tgName/" + this.tg.name).then(function(response) {
           this.tgNameExists = response.body.message === "TG Name already exists"
         })
       },
       create() {
-        if(this.tg.Name && this.tg.password && this.confirmPassword && this.tg.email && !this.emailExists && !this.tgNameExists) {
-          this.tg.Name = this.tg.Name.toLowerCase()
+        if(this.tg.name && this.tg.password && this.confirmPassword && this.tg.email && !this.emailExists && !this.tgNameExists) {
+          this.tg.name = this.tg.name.toLowerCase()
           this.$http.post(process.env.VUE_APP_API_URL + "/tg/create", this.tg).then(function(response) {
             document.querySelector(".submit-btn").setAttribute('disabled', true)
             let inputs = document.querySelectorAll("input")

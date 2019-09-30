@@ -273,7 +273,7 @@
 
         if(this.hotel.hotelName && this.hotel.email && this.hotel.password && this.confirmPassword && this.hotel.hotelAddress && this.hotel.hotelCity && this.hotel.hotelState && this.hotel.hotelCountry && this.hotel.hotelContact.hotelLandline && this.hotel.hotelSalesTeam.hotelSalesIncharge.name && this.hotel.hotelSalesTeam.hotelSalesIncharge.number && this.hotel.hotelSalesTeam.hotelCountryHead.name && this.hotel.hotelSalesTeam.hotelCountryHead.number && this.hotel.hotelSalesTeam.hotelRegionHead.name && this.hotel.hotelSalesTeam.hotelRegionHead.number && !this.emailExists) {
 
-          this.$http.post('https://kampus-tour.herokuapp.com/hotel/create', hotel ).then( (res) => {
+          this.$http.post(process.env.VUE_APP_API_URL + "hotel/create", hotel ).then( (res) => {
             document.querySelector(".submit-btn").setAttribute('disabled', true)
             let inputs = document.querySelectorAll("input")
             inputs.forEach(function(el) {
@@ -286,12 +286,12 @@
               let groupId = this.groupIds[i]
               let authToken = null
               let self = this
-              this.$http.post('https://kampus-tour.herokuapp.com/hotel/login', {
+              this.$http.post( process.env.VUE_APP_API_URL + '/hotel/login', {
                 email: hotel.email,
                 password: hotel.password
               }).then(function(res) {
                 authToken = res.body.token
-                self.$http.post('https://kampus-tour.herokuapp.com/group/add-hotel', {
+                self.$http.post(process.env.VUE_APP_API_URL + '/group/add-hotel', {
                   id: groupId,
                   hotel: {
                     name: hotel.hotelName,
@@ -314,7 +314,7 @@
     },
     created() {
       let self = this
-      this.$http.get('https://kampus-tour.herokuapp.com/group').then(function(res) {
+      this.$http.get(process.env.VUE_APP_API_URL + '/group').then(function(res) {
         res.body.forEach(function(el) {
           self.groupOptions.push(el.name)
           self.groupIds.push(el._id)

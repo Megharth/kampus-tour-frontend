@@ -284,7 +284,7 @@
         let group = this.group
         if(group.name && group.email && group.password && this.confirmPassword && !this.emailExists) {
           this.group.name = this.group.name.toLowerCase()
-          this.$http.post("https://kampus-tour.herokuapp.com/group/create", group).then(function(response) {
+          this.$http.post(process.env.VUE_APP_API_URL + "/group/create", group).then(function(response) {
             document.querySelector(".submit-btn").setAttribute('disabled', true)
             let inputs = document.querySelectorAll("input")
             inputs.forEach(function(el) {
@@ -300,7 +300,7 @@
     },
     created() {
       let self = this
-      this.$http.get("https://kampus-tour.herokuapp.com/hotel/list/all").then(function(res) {
+      this.$http.get(process.env.VUE_APP_API_URL + "/hotel/list/all").then(function(res) {
         res.body.forEach(function(hotel) {
           self.hotelOptions.push(hotel.name)
           self.hotelCities.push(hotel.city)
