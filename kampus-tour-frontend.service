@@ -1,0 +1,14 @@
+[Unit]
+Description=Kampus-tour-frontend
+
+[Service]
+Type=simple
+User=kampus
+Group=kampus
+Restart-on=failure
+
+WorkingDirectory=/home/kampus/kampus-tour-frontend/dist
+ExecStart=bash /home/kampus/kampus-tour-frontend/start.sh
+
+[Install]
+WantedBy=multi-user.target
