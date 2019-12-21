@@ -12,7 +12,7 @@
           </b-row>
           <b-row>
             <b-col>
-              <inputComponent type="text" placeholder="Name Of Hotel as per GST" v-model="hotel.hotelName" :required="false"></inputComponent>
+              <inputComponent type="text" placeholder="Name Of Hotel as per GST" v-model="hotel.hotelName" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row>
@@ -30,7 +30,7 @@
           </b-row>
           <b-row>
             <b-col>
-              <inputComponent type="password" placeholder="Password" v-model="hotel.password" :required="false"></inputComponent>
+              <inputComponent type="password" placeholder="Password" v-model="hotel.password" :required="true"></inputComponent>
             </b-col>
             <b-col>
               <b-form-group>
@@ -76,7 +76,7 @@
           </b-row>
           <b-row>
             <b-col>
-              <inputComponent type="text" placeholder="Address" v-model="hotel.hotelAddress" :required="false"></inputComponent>
+              <inputComponent type="text" placeholder="Address" v-model="hotel.hotelAddress" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row>
@@ -88,10 +88,10 @@
           </b-row>
           <b-row class="contact">
             <b-col>
-              <inputComponent type="number" placeholder="Landline Number" v-model="hotel.hotelContact.hotelLandline" :required="false"></inputComponent>
+              <inputComponent type="number" placeholder="Landline Number" v-model="hotel.hotelContact.hotelLandline" :required="true"></inputComponent>
             </b-col>
             <b-col>
-              <inputComponent type="text" placeholder="Website" v-model="hotel.hotelContact.hotelWebsite" :required="false"></inputComponent>
+              <inputComponent type="text" placeholder="Website" v-model="hotel.hotelContact.hotelWebsite" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row class="labels">
@@ -101,10 +101,10 @@
           </b-row>
           <b-row>
             <b-col>
-              <inputComponent type="text" placeholder="Name" v-model="hotel.hotelSalesTeam.hotelSalesIncharge.name" :required="false"></inputComponent>
+              <inputComponent type="text" placeholder="Name" v-model="hotel.hotelSalesTeam.hotelSalesIncharge.name" :required="true"></inputComponent>
             </b-col>
             <b-col>
-              <inputComponent type="number" placeholder="Phone Number" v-model="hotel.hotelSalesTeam.hotelSalesIncharge.number" :required="false"></inputComponent>
+              <inputComponent type="number" placeholder="Phone Number" v-model="hotel.hotelSalesTeam.hotelSalesIncharge.number" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row class="labels">
@@ -114,10 +114,10 @@
           </b-row>
           <b-row>
             <b-col>
-              <inputComponent type="text" placeholder="Name" v-model="hotel.hotelSalesTeam.hotelCountryHead.name" :required="false"></inputComponent>
+              <inputComponent type="text" placeholder="Name" v-model="hotel.hotelSalesTeam.hotelCountryHead.name" :required="true"></inputComponent>
             </b-col>
             <b-col>
-              <inputComponent type="number" placeholder="Phone Number" v-model="hotel.hotelSalesTeam.hotelCountryHead.number" :required="false"></inputComponent>
+              <inputComponent type="number" placeholder="Phone Number" v-model="hotel.hotelSalesTeam.hotelCountryHead.number" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row class="labels">
@@ -127,10 +127,10 @@
           </b-row>
           <b-row>
             <b-col>
-              <inputComponent type="text" placeholder="Name" v-model="hotel.hotelSalesTeam.hotelRegionHead.name" :required="false"></inputComponent>
+              <inputComponent type="text" placeholder="Name" v-model="hotel.hotelSalesTeam.hotelRegionHead.name" :required="true"></inputComponent>
             </b-col>
             <b-col>
-              <inputComponent type="number" placeholder="Phone Number" v-model="hotel.hotelSalesTeam.hotelRegionHead.number" :required="false"></inputComponent>
+              <inputComponent type="number" placeholder="Phone Number" v-model="hotel.hotelSalesTeam.hotelRegionHead.number" :required="true"></inputComponent>
             </b-col>
           </b-row>
           <b-row>
@@ -191,16 +191,16 @@
           },
           hotelSalesTeam: {
             hotelSalesIncharge: {
-              name: "",
-              number: ""
+              name: null,
+              number: null
             },
             hotelCountryHead: {
-              name: "",
-              number: ""
+              name: null,
+              number: null
             },
             hotelRegionHead: {
-              name: "",
-              number: ""
+              name: null,
+              number: null
             },
           },
           hotelRoomCategories: [],
@@ -262,9 +262,6 @@
       },
       create() {
         let hotel = this.hotel
-        hotel.hotelSalesTeam.hotelSalesIncharge.number = "0000000000"
-	hotel.hotelSalesTeam.hotelCountryHead.number = "0000000000"
-	hotel.hotelSalesTeam.hotelRegionHead.number = "0000000000"
         if(this.location){
           let location = this.location.split(',')
           this.hotel.hotelCity = location[0]
@@ -274,11 +271,9 @@
         if(this.hotel.nameOfGroup === null)
           this.hotel.nameOfGroup = ''
 
-        if(this.hotel.hotelName && this.hotel.email && this.hotel.password && this.confirmPassword && this.hotel.hotelAddress && this.hotel.hotelCity && this.hotel.hotelState && this.hotel.hotelCountry && this.hotel.hotelContact.hotelLandline 
-//&& this.hotel.hotelSalesTeam.hotelSalesIncharge.name && this.hotel.hotelSalesTeam.hotelSalesIncharge.number && this.hotel.hotelSalesTeam.hotelCountryHead.name && this.hotel.hotelSalesTeam.hotelCountryHead.number && this.hotel.hotelSalesTeam.hotelRegionHead.name && this.hotel.hotelSalesTeam.hotelRegionHead.number 
-&& !this.emailExists) {
+        if(this.hotel.hotelName && this.hotel.email && this.hotel.password && this.confirmPassword && this.hotel.hotelAddress && this.hotel.hotelCity && this.hotel.hotelState && this.hotel.hotelCountry && this.hotel.hotelContact.hotelLandline && this.hotel.hotelSalesTeam.hotelSalesIncharge.name && this.hotel.hotelSalesTeam.hotelSalesIncharge.number && this.hotel.hotelSalesTeam.hotelCountryHead.name && this.hotel.hotelSalesTeam.hotelCountryHead.number && this.hotel.hotelSalesTeam.hotelRegionHead.name && this.hotel.hotelSalesTeam.hotelRegionHead.number && !this.emailExists) {
 
-          this.$http.post(process.env.VUE_APP_API_URL + "/hotel/create", hotel ).then( (res) => {
+          this.$http.post(process.env.VUE_APP_API_URL + "hotel/create", hotel ).then( (res) => {
             document.querySelector(".submit-btn").setAttribute('disabled', true)
             let inputs = document.querySelectorAll("input")
             inputs.forEach(function(el) {
@@ -296,7 +291,7 @@
                 password: hotel.password
               }).then(function(res) {
                 authToken = res.body.token
-                self.$http.post(process.env.VUE_APP_API_URL + '/group/add-hotel', {
+                self.$http.post( VUE_APP_API_URL+ '/group/add-hotel', {
                   id: groupId,
                   hotel: {
                     name: hotel.hotelName,
@@ -309,9 +304,7 @@
                 })
               })
             }
-          }).then(function() {
-	  	this.$router.push('/')
- 	  })
+          })
         }
         else {
           alert("Please Complete the form before submitting")
@@ -321,7 +314,7 @@
     },
     created() {
       let self = this
-      this.$http.get(process.env.VUE_APP_API_URL + '/group').then(function(res) {
+      this.$http.get('https://kampus-tour.herokuapp.com/group').then(function(res) {
         res.body.forEach(function(el) {
           self.groupOptions.push(el.name)
           self.groupIds.push(el._id)
