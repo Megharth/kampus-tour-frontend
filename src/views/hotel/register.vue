@@ -262,9 +262,9 @@
       },
       create() {
         let hotel = this.hotel
-        hotel.hotelSalesTeam.hotelSalesIncharge.number = "0000000000"
-	hotel.hotelSalesTeam.hotelCountryHead.number = "0000000000"
-	hotel.hotelSalesTeam.hotelRegionHead.number = "0000000000"
+        hotel.hotelSalesTeam.hotelSalesIncharge.number = hotel.hotelSalesTeam.hotelSalesIncharge.number === "" ? "0000000000" : hotel.hotelSalesTeam.hotelSalesIncharge.number
+	hotel.hotelSalesTeam.hotelCountryHead.number = hotel.hotelSalesTeam.hotelCountryHead.number === "" ? "0000000000" : hotel.hotelSalesTeam.hotelCountryHead.number
+	hotel.hotelSalesTeam.hotelRegionHead.number = hotel.hotelSalesTeam.hotelRegionHead.number === "" ? "0000000000" : hotel.hotelSalesTeam.hotelRegionHead.number
         if(this.location){
           let location = this.location.split(',')
           this.hotel.hotelCity = location[0]

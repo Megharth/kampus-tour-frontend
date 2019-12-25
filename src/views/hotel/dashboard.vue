@@ -117,7 +117,7 @@
         if(Object.values(this.user.hotelSalesTeam.hotelCountryHead).indexOf("") !== -1 || Object.values(this.user.hotelSalesTeam.hotelCountryHead).indexOf(null) !== -1)
           countryHeadError = true
 
-        if(!contactError && !salesInchargeError && !regionHeadError && !countryHeadError){
+        if(!contactError){
           this.$http.put(process.env.VUE_APP_API_URL + "/hotel/", this.user, {
             headers: {
               Authorization: this.user.token
